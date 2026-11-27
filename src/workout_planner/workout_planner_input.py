@@ -6,7 +6,6 @@ from workout_planner.services.workout_planner_service import (
     WorkoutPlannerService
 )
 
-
 st.set_page_config(
     page_title="Workout Planner",
     layout="wide"
@@ -14,10 +13,9 @@ st.set_page_config(
 
 st.title("AI Workout Planner")
 
-
 with st.form("workout_form"):
-
     col1, col2 = st.columns(2)
+    btn_col1, btn_col2 = st.columns(2)
 
     with col1:
         fitness_goal = st.selectbox(
@@ -53,10 +51,18 @@ with st.form("workout_form"):
             placeholder="Describe any limitations, or enter None"
         )
 
-    submitted = st.form_submit_button(
-        "Generate Plan",
-        type="primary"
-    )
+    with btn_col1:
+        submitted = st.form_submit_button(
+            "Generate Plan",
+            type="primary"
+        )
+
+    with btn_col2:
+        regenerate_plan = st.empty()
+
+
+def handle_regenerate_plan():
+    print("Regenerating your workout plan...")
 
 
 if submitted:
@@ -80,6 +86,11 @@ if submitted:
 
         st.subheader("Your Personalized Workout Plan")
         st.markdown(workout_plan)
+
+        with regenerate_plan:
+            regenerate_plan = st.form_submit_button(
+                "Regenerate your workout plan", type="primary", on_click=handle_regenerate_plan
+            )
 
     except Exception:
         st.error(
